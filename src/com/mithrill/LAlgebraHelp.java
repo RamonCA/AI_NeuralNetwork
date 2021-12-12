@@ -1,6 +1,7 @@
+package com.mithrill;
 public class LAlgebraHelp {
 
-    public static double [][] mat_Multiplication(double [][] mat_A, double[][] mat_B){
+    public static double [][] mat_Multiplication(double [][] mat_B, double[][] mat_A){
         double [][] mat_XTmultX = new double[mat_B.length][mat_A[0].length];
 
         for (int i = 0; i < mat_B.length; i++) {
@@ -61,16 +62,13 @@ public class LAlgebraHelp {
     }
 
     //Esta me la traje del logistic regression
-    public static double sigmoid(int position,double [] weights,double [][] x) {
-        double result = weights[0];
-
-        for (int i = 1; i < x[0].length; i++) {
-
-            result += weights[i] * x[position][i];
-
+    public static double[][] sigmoide(double [][] neuron) {
+        for(int i = 0; i < neuron.length; i++)
+        {
+            for(int j = 0; j < neuron[0].length; j++)
+                neuron[i][j] = 1/(1+Math.exp(-neuron[i][j]));
         }
-
-        return result;
+        return neuron;
     }
 
     //funcion sigmoide activacion
