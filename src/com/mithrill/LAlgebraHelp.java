@@ -1,9 +1,11 @@
 package com.mithrill;
+
+import java.util.Arrays;
+
 public class LAlgebraHelp {
 
     public static double [][] mat_Multiplication(double [][] mat_B, double[][] mat_A){
         double [][] mat_XTmultX = new double[mat_B.length][mat_A[0].length];
-
         for (int i = 0; i < mat_B.length; i++) {
             for (int j = 0; j < mat_A[0].length; j++) {
                 double x = 0;
@@ -14,6 +16,19 @@ public class LAlgebraHelp {
             }
         }
         return mat_XTmultX;
+    }
+
+    public static double[][] multi(double[][] ma, double a) {
+        double[][] ans=new double[ma.length][ma[0].length];
+
+        for(int i = 0; i< ma.length; i++)
+        {
+            for(int j = 0; j< ma[0].length; j++)
+            {
+                ans[i][j] = ma[i][j] *a;
+            }
+        }
+        return ans;
     }
 
     public static double[][] mat_Sum(double[][] mat_A, double[][] mat_B){
@@ -69,6 +84,25 @@ public class LAlgebraHelp {
                 neuron[i][j] = 1/(1+Math.exp(-neuron[i][j]));
         }
         return neuron;
+    }
+
+    public static double [][] dSigmoide(double [][] matInput) {
+
+        for(int i = 0; i< matInput.length; i++)
+        {
+            for(int j = 0; j< matInput[0].length; j++)
+                matInput[i][j] = matInput[i][j] * (1-matInput[i][j]);
+        }
+        return matInput;
+    }
+
+    public static double[][] convertir_Array_Matrix(double[]x) {
+
+        double[][] result = new  double[x.length][1];
+        for(int i =0;i<x.length;i++)
+            result[i][0]=x[i];
+        return result;
+
     }
 
     //funcion sigmoide activacion

@@ -63,8 +63,7 @@ public class FeedForwad {
 //        System.out.println("w*nt" + Arrays.deepToString(multActWgs));
 //        System.out.println(Arrays.deepToString(bias));
         nextAct = LAlgebraHelp.mat_Sum(multActWgs, LAlgebraHelp.matrix_XT(bias));
-//        System.out.println("NextNN" + Arrays.deepToString(nextAct));
-//        assert nextAct != null;
+        assert nextAct != null;
         assert nextAct != null;
         neuronNext = LAlgebraHelp.sigmoide(LAlgebraHelp.matrix_XT(nextAct));
         return neuronNext;
