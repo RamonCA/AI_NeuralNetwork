@@ -27,7 +27,9 @@ public class Main {
         List<FeedForwad> data;
         data = test.NeuronInitializer();
         data = test.cycleTraining(data, X, Y, 10000);
-        System.out.println(Arrays.deepToString(data.get(1).getNeuronPrev()));
+        data = test.prediction(data, new double[][]{{0,0,1,1,0,0,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,0}});
+        System.out.println(Arrays.deepToString(data.get(1).activacion()));
+
 
 
 

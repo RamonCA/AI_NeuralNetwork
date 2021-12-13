@@ -28,12 +28,13 @@ public class BackPropagation {
         List <FeedForwad>layers = new ArrayList<>();
         double[][] weights = initializeMat(hidden, neuron[0].length);
         double[][] bias = initializeMat(1, hidden);
+        double[][] tNeuron = LAlgebraHelp.matrix_XT(neuron);
 
-        FeedForwad firstLayer = new FeedForwad(weights, neuron, bias);
+        FeedForwad firstLayer = new FeedForwad(weights, tNeuron, bias);
         double [][] neuronNext = firstLayer.activacion();
         layers.add(firstLayer);
 
-        FeedForwad secondLayer = new FeedForwad(initializeMat(output,neuronNext[0].length), neuronNext,
+        FeedForwad secondLayer = new FeedForwad(initializeMat(output,neuronNext.length), neuronNext,
                 initializeMat(1, output));
         layers.add(secondLayer);
 
@@ -41,35 +42,40 @@ public class BackPropagation {
     }
 
     public void training(List<FeedForwad> data, double [] isample, double[] itarget){
-        double [][] sample = LAlgebraHelp.matrix_XT(LAlgebraHelp.convertir_Array_Matrix(isample));
-        double [][] target = LAlgebraHelp.matrix_XT(LAlgebraHelp.convertir_Array_Matrix(itarget));
+        double [][] sample = LAlgebraHelp.convertir_Array_Matrix(isample);
+        double [][] target = LAlgebraHelp.convertir_Array_Matrix(itarget);
 
         FeedForwad firstLayer = data.get(0);
         FeedForwad secondLayer = data.get(1);
 
         firstLayer.setNeuronPrev(sample);
+        //System.out.println(Arrays.deepToString(sample));
         secondLayer.setNeuronPrev(firstLayer.activacion());
-
+        //System.out.println(Arrays.deepToString(target));
         double [][] output = secondLayer.activacion();
-        double [][] error = LAlgebraHelp.matrix_XT(LAlgebraHelp.mat_rest(target, output));
+        //System.out.println(Arrays.deepToString(output));
+        double [][] error = LAlgebraHelp.mat_rest(target, output);
         double [][] gradient = LAlgebraHelp.dSigmoide(output);
 
-        System.out.println(Arrays.deepToString(gradient));
-        System.out.println(Arrays.deepToString(error));
         gradient = LAlgebraHelp.mat_Multiplication(gradient, error);
         gradient = LAlgebraHelp.multi(gradient, 0.01);
 
-        double [][] auxHiddenOutput = LAlgebraHelp.mat_Multiplication(gradient, firstLayer.getNeuronPrev());
+        double [][] auxHiddenOutput = LAlgebraHelp.mat_Multiplication(gradient, LAlgebraHelp.matrix_XT(secondLayer.getNeuronPrev()));
 
         secondLayer.setWeights(LAlgebraHelp.mat_Sum(secondLayer.getWeights(), auxHiddenOutput));
         secondLayer.setBias(LAlgebraHelp.mat_Sum(secondLayer.getBias(), gradient));
 
         double [][] hidErr = LAlgebraHelp.mat_Multiplication(LAlgebraHelp.matrix_XT(auxHiddenOutput), error);
         double [][] hiddGradient = LAlgebraHelp.dSigmoide(secondLayer.getNeuronPrev());
-        hiddGradient = LAlgebraHelp.mat_Multiplication(hiddGradient, hidErr);
+
+//        System.out.println("hgrad = " + hiddGradient.length);
+//        System.out.println("herr = " + hidErr.length);
+
+        hiddGradient = LAlgebraHelp.multiplicacion(hiddGradient, hidErr);
         hiddGradient = LAlgebraHelp.multi(hiddGradient, 0.01);
 
         double [][] auxInputHidden = LAlgebraHelp.mat_Multiplication(hiddGradient, LAlgebraHelp.matrix_XT(sample));
+        //System.out.println("FL size = " + auxInputHidden.length + " " + auxInputHidden[0].length) ;
         firstLayer.setWeights(LAlgebraHelp.mat_Sum(firstLayer.getWeights(), auxInputHidden));
         firstLayer.setBias(LAlgebraHelp.mat_Sum(firstLayer.getBias(),hiddGradient));
 
@@ -86,5 +92,22 @@ public class BackPropagation {
         }
 
         return data;
+    }
+
+    public List<FeedForwad> prediction(List<FeedForwad> finalData, double [][]userInput){
+        List <FeedForwad>layers = new ArrayList<>();
+        double[][] weights = finalData.get(0).getWeights();
+        double[][] bias = finalData.get(0).getBias();
+        double[][] tNeuron = LAlgebraHelp.matrix_XT(userInput);
+
+        FeedForwad firstLayer = new FeedForwad(weights, tNeuron, bias);
+        double [][] neuronNext = firstLayer.activacion();
+        layers.add(firstLayer);
+
+        FeedForwad secondLayer = new FeedForwad(initializeMat(output,neuronNext.length), neuronNext,
+                initializeMat(1, output));
+        layers.add(secondLayer);
+
+        return layers;
     }
 }

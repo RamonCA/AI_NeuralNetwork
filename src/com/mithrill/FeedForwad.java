@@ -12,7 +12,7 @@ public class FeedForwad {
         this.weights = weights;
         this.neuronPrev = neuronPrev;
         //this.neuronNext = neuronNext;
-        this.bias = bias;
+        this.bias = LAlgebraHelp.matrix_XT(bias);
     }
 
     public double[][] getNeuronPrev() {
@@ -55,17 +55,18 @@ public class FeedForwad {
         //return neuronNext;
 
     public double[][] activacion() {
+
         double[][] neuronNext, multActWgs, nextAct;
 //        System.out.println(new StringBuilder().append("Weights").append(Arrays.deepToString(weights)).toString());
 //        System.out.println(new StringBuilder().append("BIas").append(Arrays.deepToString(bias)).toString());
 //        System.out.println(new StringBuilder().append("NeuronT").append(Arrays.deepToString(LAlgebraHelp.matrix_XT(neuronPrev))).toString());
-        multActWgs = LAlgebraHelp.mat_Multiplication(weights,LAlgebraHelp.matrix_XT(neuronPrev));
+        multActWgs = LAlgebraHelp.mat_Multiplication(weights,neuronPrev);
 //        System.out.println("w*nt" + Arrays.deepToString(multActWgs));
 //        System.out.println(Arrays.deepToString(bias));
-        nextAct = LAlgebraHelp.mat_Sum(multActWgs, LAlgebraHelp.matrix_XT(bias));
+        nextAct = LAlgebraHelp.mat_Sum(multActWgs, bias);
+//        System.out.println("posible null: " + Arrays.deepToString(nextAct));
         assert nextAct != null;
-        assert nextAct != null;
-        neuronNext = LAlgebraHelp.sigmoide(LAlgebraHelp.matrix_XT(nextAct));
+        neuronNext = LAlgebraHelp.sigmoide(nextAct);
         return neuronNext;
     }
 }

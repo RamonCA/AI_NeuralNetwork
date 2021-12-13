@@ -31,6 +31,17 @@ public class LAlgebraHelp {
         return ans;
     }
 
+    public static double [][] multiplicacion(double [][] a, double [][] b) {
+        for(int i = 0; i<b.length; i++)
+        {
+            for(int j = 0; j<b[0].length; j++)
+            {
+                a[i][j]*=b[i][j];
+            }
+        }
+        return a;
+    }
+
     public static double[][] mat_Sum(double[][] mat_A, double[][] mat_B){
         double[][] mat_sum;
         
@@ -87,13 +98,13 @@ public class LAlgebraHelp {
     }
 
     public static double [][] dSigmoide(double [][] matInput) {
-
+        double[][] matAns = new double[matInput.length][matInput[0].length];
         for(int i = 0; i< matInput.length; i++)
         {
             for(int j = 0; j< matInput[0].length; j++)
-                matInput[i][j] = matInput[i][j] * (1-matInput[i][j]);
+                matAns[i][j] = matInput[i][j] * (1-matInput[i][j]);
         }
-        return matInput;
+        return matAns;
     }
 
     public static double[][] convertir_Array_Matrix(double[]x) {
