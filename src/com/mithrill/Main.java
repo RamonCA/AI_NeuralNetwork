@@ -25,13 +25,10 @@ public class Main {
 	// write your code here
         BackPropagation test = new BackPropagation(new double[][]{{0,0,1,1,0,0,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,0}},12,2);
         List<FeedForwad> data;
-        data = test.NeuronInitializer();
-        data = test.cycleTraining(data, X, Y, 10000);
-        data = test.prediction(data, new double[][]{{0,0,1,1,0,0,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,0}});
+        //data = test.NeuronInitializer();
+        test.NeuronInitializer();
+        test.cycleTraining(X, Y, 100000);
+        data = test.prediction(new double[]{0,0,1,0,0,0,1,1,0,0,1,1,1,1,1,0,1,1,0,1,0,0,1,0,1});
         System.out.println(Arrays.deepToString(data.get(1).activacion()));
-
-
-
-
     }
 }
